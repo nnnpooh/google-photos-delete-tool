@@ -10,7 +10,7 @@ const ELEMENT_SELECTORS = {
   deleteButton:
     "#yDmH0d > div.uW2Fw-Sx9Kwc.uW2Fw-Sx9Kwc-OWXEXe-n2to0e.uW2Fw-Sx9Kwc-OWXEXe-wdeprb-MD85tf-DKzjMe.V639qd.lQCeof.oEOLpc.A9Uzve.uW2Fw-Sx9Kwc-OWXEXe-FNFY6c > div.uW2Fw-wzTsW.O4g5Md.iWO5td > div > div.uW2Fw-cnG4Wd.m5OsGf > div > div.uW2Fw-T0kwCb.IdSMxc > button:nth-child(2)",
   confirmationButton:
-    'div[aria-modal="true"] > div > div > div > button:nth-of-type(2)',
+    "#yDmH0d > div.uW2Fw-Sx9Kwc.uW2Fw-Sx9Kwc-OWXEXe-n2to0e.V639qd.QaJAKf.lQCeof.oEOLpc.A9Uzve.uW2Fw-Sx9Kwc-OWXEXe-FNFY6c > div.uW2Fw-wzTsW.O4g5Md.iWO5td > div > div.uW2Fw-cnG4Wd.m5OsGf > div > div.uW2Fw-T0kwCb.IdSMxc > button:nth-child(2)",
 };
 
 // Time Configuration (in milliseconds)
@@ -61,26 +61,32 @@ let deleteTask = setInterval(async () => {
     } catch {}
 
     setTimeout(() => {
-      //   buttons.confirmation_button = document.querySelector(
-      //     ELEMENT_SELECTORS["confirmationButton"]
-      //   );
-      //   buttons.confirmation_button.click();
+      try {
+        buttons.deleteButton = document.querySelector(
+          ELEMENT_SELECTORS["deleteButton"]
+        );
+        buttons.deleteButton.click();
+      } catch {}
 
-      buttons.deleteButton = document.querySelector(
-        ELEMENT_SELECTORS["deleteButton"]
-      );
-      buttons.deleteButton.click();
+      setTimeout(() => {
+        try {
+          buttons.confirmationButton = document.querySelector(
+            ELEMENT_SELECTORS["confirmationButton"]
+          );
+          buttons.confirmationButton.click();
+        } catch {}
 
-      console.log(`[INFO] ${imageCount}/${maxImageCount} Deleted`);
-      if (
-        maxImageCount !== "ALL_PHOTOS" &&
-        imageCount >= parseInt(maxImageCount)
-      ) {
-        console.log(`${imageCount} photos deleted as requested`);
-        clearInterval(deleteTask);
-        console.log("[SUCCESS] Tool exited.");
-        return;
-      }
+        console.log(`[INFO] ${imageCount}/${maxImageCount} Deleted`);
+        if (
+          maxImageCount !== "ALL_PHOTOS" &&
+          imageCount >= parseInt(maxImageCount)
+        ) {
+          console.log(`${imageCount} photos deleted as requested`);
+          clearInterval(deleteTask);
+          console.log("[SUCCESS] Tool exited.");
+          return;
+        }
+      }, TIME_CONFIG["press_button_delay"]);
     }, TIME_CONFIG["press_button_delay"]);
   }, TIME_CONFIG["press_button_delay"]);
 }, TIME_CONFIG["delete_cycle"]);
